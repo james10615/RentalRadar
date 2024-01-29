@@ -122,6 +122,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
+                    <div class="text-center mt-0">
+                        <img src="icons/account.png" alt="Icon" height="50"
+                            style="position: absolute; left: 45%; transform: translatey(-60%); ">
+                    </div>
                     <div class="card-header">
                         User Login
                     </div>
@@ -129,11 +133,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <form id="loginForm" action="login.php" method="post">
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
+                                <input type="email" class="form-control" id="email" name="email"
+                                    placeholder="Enter your email" required>
                             </div>
                             <div class="form-group">
                                 <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
+                                <input type="password" class="form-control" id="password" name="password"
+                                    placeholder="enter your password" required>
                             </div>
                             <button type="submit" class="btn btn-dark btn-center">Login</button>
                             <div class="forgot-password">
@@ -159,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 
-    <footer class="footer mt-auto py-3 text-center">
+    <footer class="footer mt-auto py-3 text-center fixed-bottom">
         <div class="container">
             <span class="text-muted">Copyright &copy; 2024 RentalRadar. All rights reserved.</span>
         </div>
