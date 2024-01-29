@@ -1,11 +1,10 @@
 <?php
-// Define your database connection parameters
 $host = 'localhost';
 $dbname = 'rentalradar';
 $username = 'root';
 $password = '';
 
-// Establish a connection to the database using PDO
+
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -13,9 +12,7 @@ try {
     die("Database connection failed: " . $e->getMessage());
 }
 
-// Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Retrieve form data
     $firstName = $_POST['firstName'];
     $surname = $_POST['surname'];
     $lastName = $_POST['lastName'];
@@ -23,17 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'];
     $confirmPassword = $_POST['confirmPassword'];
 
-    // Validate form data (you can add more validation if needed)
-
-    // Check if passwords match
     if ($password !== $confirmPassword) {
         die("Passwords do not match");
     }
 
-    // Hash the password securely using bcrypt
     $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-    // Insert user data into the database
     $stmt = $pdo->prepare("INSERT INTO users (first_name, surname, last_name, email, password) VALUES (?, ?, ?, ?, ?)");
 
     try {
@@ -59,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         body {
             background-color: #e6e6e6;
             padding-top: 56px;
-            /* Adjusted to account for the fixed navbar */
+
         }
 
         .navbar {
@@ -71,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .container {
             margin-top: 80px;
-            /* Adjusted to provide space below the fixed navbar */
+
         }
 
         .card {
@@ -87,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <body>
 
-    <!-- Navigation Bar -->
+
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e6e6e6;">
         <a class="navbar-brand" href="#">RentalRadar</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -109,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </nav>
 
-    <!-- Registration Form -->
+
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -118,7 +110,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         User Registration
                     </div>
                     <div class="card-body">
-                        <!-- Alert for displaying errors -->
                         <div id="errorAlert" class="alert alert-danger" style="display: none;"></div>
 
                         <form id="registrationForm" action="User-Registration.php" method="post">
@@ -162,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             registrationForm.addEventListener('submit', function (event) {
                 var isValid = true;
-                errorAlert.innerHTML = ''; // Clear previous error messages
+                errorAlert.innerHTML = '';
 
                 if (!validateEmail()) {
                     isValid = false;
@@ -189,7 +180,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 var emailValue = emailInput.value.trim();
                 var emailError = document.getElementById('emailError');
 
-                // Basic email validation
                 var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailRegex.test(emailValue)) {
                     errorAlert.innerHTML += 'Please enter a valid email address.<br>';
@@ -203,7 +193,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 var passwordInput = document.getElementById('password');
                 var passwordValue = passwordInput.value.trim();
 
-                // Basic password validation (minimum length)
                 if (passwordValue.length < 6) {
                     errorAlert.innerHTML += 'Password must be at least 6 characters long.<br>';
                     return false;
@@ -217,7 +206,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 var confirmPasswordInput = document.getElementById('confirmPassword');
                 var confirmPasswordValue = confirmPasswordInput.value.trim();
 
-                // Check if passwords match
                 if (passwordInput.value !== confirmPasswordValue) {
                     errorAlert.innerHTML += 'Passwords do not match.<br>';
                     return false;
@@ -237,7 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    <!-- Footer -->
+
     <footer class="footer mt-auto py-3 text-center">
         <div class="container">
             <span class="text-muted">Copyright &copy; 2024 RentalRadar. All rights reserved.</span>
