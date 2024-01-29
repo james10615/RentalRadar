@@ -116,6 +116,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
+                    <div class="text-center mt-0">
+                        <img src="icons/account.png" alt="Icon" height="50"
+                            style="position: absolute; left: 45%; transform: translatey(-60%); ">
+                    </div>
                     <div class="card-header">
                         User Registration
                     </div>
