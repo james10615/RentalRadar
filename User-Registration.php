@@ -30,7 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         $stmt->execute([$firstName, $surname, $lastName, $email, $hashedPassword]);
-        echo "Registration successful!";
+        header('Location: login.php?registration=success');
+        exit();
     } catch (PDOException $e) {
         die("Registration failed: " . $e->getMessage());
     }
@@ -69,10 +70,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .card {
             border-radius: 15px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
         }
 
         .form-control {
             border-radius: 8px;
+        }
+
+        .card:hover {
+            transform: scale(1.1);
         }
     </style>
 </head>
@@ -92,8 +98,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <a class="nav-link" href="#">Home</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="login.php">Login</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
                 </li>
+
             </ul>
         </div>
         <div class="navbar-nav ml-auto">
@@ -138,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
                                     required>
                             </div>
-                            <button type="submit" class="btn btn-primary">Register</button>
+                            <button type="submit" class="btn btn-dark">Register</button>
                         </form>
                     </div>
                 </div>
