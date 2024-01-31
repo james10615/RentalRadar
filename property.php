@@ -178,10 +178,12 @@ try {
                             <p>Unit:
                                 <?php echo $property['unit']; ?>
                             </p>
-                            <p>Rent: $
+                            <p>Rent: Ksh
                                 <?php echo $property['rent']; ?>/month
                             </p>
-                            <button class="btn btn-sm btn-dark">View Details</button>
+
+                            <button class="btn btn-sm btn-dark">Details</button>
+                            <button class="btn btn-sm btn-dark">occupied</button>
                             <hr>
                             <form action="" method="post" class="remove-property-form">
                                 <input type="hidden" name="property_id" value="<?php echo $property['id']; ?>">
