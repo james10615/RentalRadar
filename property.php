@@ -154,6 +154,7 @@ try {
             <a class="nav-item nav-link btn btn-dark" href="#" style="color: white;">Contact Us</a>
         </div>
     </nav>
+    <div id="statusMessageContainer"></div>
 
     <div class="container">
         <div class="row">
@@ -264,39 +265,44 @@ try {
         crossorigin="anonymous"></script>
 
     <script>
-        console.log("JavaScript is running.");
+
         jQuery(document).on('click', '.remove-property-btn', function (e) {
             e.preventDefault();
-
-            console.log("Remove button clicked");
 
             var propertyId = $(this).closest('.remove-property-form').find('input[name="property_id"]').val();
             console.log("Property ID to remove: " + propertyId);
 
             var cardToRemove = $(this).closest('.property-card');
 
-            $.ajax({
-                type: 'POST',
-                url: 'property.php',
-                data: {
-                    remove_property: true,
-                    property_id: propertyId
-                },
-                success: function (response) {
-                    console.log("Ajax success");
+            var confirmDelete = confirm("Are you sure you want to delete this property? This action cannot be undone.");
 
-                    if (response.toLowerCase().includes('success')) {
-                        console.log("Property removed successfully");
-                        cardToRemove.remove();
-                    } else {
-                        console.log("Error removing property: " + response);
-                        alert('Error removing property: ' + response);
+            if (confirmDelete) {
+                $.ajax({
+                    type: 'POST',
+                    url: 'property.php',
+                    data: {
+                        remove_property: true,
+                        property_id: propertyId
+                    },
+                    success: function (response) {
+                        console.log("Ajax success");
+
+                        if (response.toLowerCase().includes('success')) {
+                            console.log("Property removed successfully");
+                            cardToRemove.remove();
+                            $('#statusMessageContainer').html('<p class="alert alert-success">Property removed successfully!</p>');
+                        } else {
+                            console.log("Error removing property: " + response);
+                            alert('Error removing property: ' + response);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("Ajax error", xhr, status, error.responseText);
                     }
-                },
-                error: function (xhr, status, error) {
-                    console.log("Ajax error", xhr, status, error.responseText);
-                }
-            });
+                });
+            } else {
+                console.log("Deletion canceled by user.");
+            }
         });
     </script>
 
