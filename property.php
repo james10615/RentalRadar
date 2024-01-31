@@ -1,43 +1,37 @@
 <?php
-// Database connection parameters
+
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "rentalradar";
 
 try {
-    // Create a PDO connection
+
     $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    // Set the PDO error mode to exception
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Check if the form is submitted
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Check if form fields are set before accessing them
         $propertyName = isset($_POST["propertyName"]) ? $_POST["propertyName"] : null;
         $unit = isset($_POST["unit"]) ? $_POST["unit"] : null;
         $rent = isset($_POST["rent"]) ? $_POST["rent"] : null;
 
-        // Validate form data (you may add more validation as needed)
-        if (empty($propertyName) || empty($unit) || empty($rent)) {
+        if (isset($_POST["remove_property"])) {
+        } elseif (empty($propertyName) || empty($unit) || empty($rent)) {
             echo "Please fill in all the fields.";
         } else {
-            // SQL query to insert data into the properties table using prepared statements
             $sql = "INSERT INTO properties (property_name, unit, rent) VALUES (:propertyName, :unit, :rent)";
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':propertyName', $propertyName);
             $stmt->bindParam(':unit', $unit);
             $stmt->bindParam(':rent', $rent);
 
-            // Execute the query
             if ($stmt->execute()) {
                 echo '<p class="alert alert-success">New property added successful!</p>';
             } else {
-                echo "Error: " . $sql . "<br>" . $stmt->errorInfo()[2];
+                echo '<div class="alert alert-danger" role="alert">Error adding property: ' . $stmt->errorInfo()[2] . '</div>';
             }
         }
     }
-    // Fetch data from the database
     $stmt = $pdo->query("SELECT * FROM properties");
     $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -66,7 +60,6 @@ try {
             background-color: #f8f9fa;
             padding-top: 56px;
             margin-bottom: 150px;
-            /* Ensure space for footer */
         }
 
         .navbar {
@@ -122,7 +115,6 @@ try {
             animation: zoomOut 1s ease-out;
         }
 
-        /* Animation keyframes */
         @keyframes zoomOut {
             from {
                 transform: scale(0);
@@ -165,7 +157,6 @@ try {
 
     <div class="container">
         <div class="row">
-            <!-- Add New Property Card -->
             <div class="col-md-3">
                 <div class="property-card add-property-card text-center" data-toggle="modal"
                     data-target="#addPropertyModal">
@@ -176,12 +167,10 @@ try {
                     </div>
                 </div>
             </div>
-            <!-- Loop through properties and display cards -->
             <?php foreach ($properties as $property): ?>
                 <div class="col-md-3">
                     <div class="property-card">
                         <div class="card-body">
-                            <!-- Property Details -->
                             <h5>
                                 <?php echo $property['property_name']; ?>
                             </h5>
@@ -191,16 +180,37 @@ try {
                             <p>Rent: $
                                 <?php echo $property['rent']; ?>/month
                             </p>
-                            <!-- Additional Features -->
                             <button class="btn btn-sm btn-dark">View Details</button>
                             <hr>
-                            <button class="btn btn-sm btn-danger">Remove</button>
+                            <form action="" method="post" class="remove-property-form">
+                                <input type="hidden" name="property_id" value="<?php echo $property['id']; ?>">
+                                <button type="submit" class="btn btn-sm btn-danger remove-property-btn"
+                                    name="remove_property">Remove</button>
+                            </form>
+
                         </div>
                     </div>
                 </div>
             <?php endforeach; ?>
+            <?php
+            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["remove_property"]) && isset($_POST["property_id"])) {
+                if (isset($_POST["property_id"])) {
+                    $propertyIdToRemove = $_POST["property_id"];
 
+                    $deleteSql = "DELETE FROM properties WHERE id = :id";
+                    $deleteStmt = $pdo->prepare($deleteSql);
+                    $deleteStmt->bindParam(':id', $propertyIdToRemove);
 
+                    if ($deleteStmt->execute()) {
+                        echo '<p class="alert alert-success">Property removed successfully!</p>';
+                    } else {
+                        echo '<div class="alert alert-danger" role="alert">Error removing property: ' . $deleteStmt->errorInfo()[2] . '</div>';
+                    }
+                } else {
+                    echo '<div class="alert alert-danger" role="alert">Invalid request. Property ID not provided.</div>';
+                }
+            }
+            ?>
         </div>
     </div>
 
@@ -208,7 +218,6 @@ try {
 
     </div>
     </div>
-    <!-- Modal for Add Property Form -->
     <div class="modal" id="addPropertyModal" tabindex="-1" role="dialog" aria-labelledby="addPropertyModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -220,9 +229,7 @@ try {
                     </button>
                 </div>
                 <div class="modal-body">
-                    <!-- Your form fields go here -->
                     <form action="" method="post">
-                        <!-- Example: -->
                         <div class="form-group">
                             <label for="propertyName">Property Name</label>
                             <input type="text" class="form-control" id="propertyName" name="propertyName"
@@ -238,7 +245,6 @@ try {
                             <input type="number" class="form-control" id="rent" name="rent"
                                 placeholder="Enter rent in Ksh">
                         </div>
-                        <!-- Add more fields as needed -->
 
                         <button type="submit" class="btn btn-dark">Submit</button>
                     </form>
@@ -247,8 +253,8 @@ try {
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js"
+        integrity="sha384-/Gm+ur33q/W+9ANGYwB2Q4V0ZWApToOzRuA8md/1p9xMMxpqnlguMvk8QuEFWA1B"
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -256,6 +262,46 @@ try {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+
+    <script>
+        console.log("JavaScript is running.");
+        jQuery(document).on('click', '.remove-property-btn', function (e) {
+            e.preventDefault();
+
+            console.log("Remove button clicked");
+
+            var propertyId = $(this).closest('.remove-property-form').find('input[name="property_id"]').val();
+            console.log("Property ID to remove: " + propertyId);
+
+            var cardToRemove = $(this).closest('.property-card');
+
+            $.ajax({
+                type: 'POST',
+                url: 'property.php',
+                data: {
+                    remove_property: true,
+                    property_id: propertyId
+                },
+                success: function (response) {
+                    console.log("Ajax success");
+
+                    if (response.toLowerCase().includes('success')) {
+                        console.log("Property removed successfully");
+                        cardToRemove.remove();
+                    } else {
+                        console.log("Error removing property: " + response);
+                        alert('Error removing property: ' + response);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Ajax error", xhr, status, error.responseText);
+                }
+            });
+        });
+    </script>
+
+
+
 
     <footer class="footer mt-auto py-3 text-center fixed-bottom">
         <div class="container">
