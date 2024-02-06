@@ -187,8 +187,9 @@ try {
                             $buttonName = ($status == 'Occupied') ? 'Occupied' : 'Rent';
                             $buttonTextStyle = ($status == 'Occupied') ? 'text-decoration: line-through;' : '';
                             ?>
-                            <button class="<?php echo $buttonClass; ?>" <?php echo ($status == 'Occupied') ? 'disabled' : 'onclick="redirectToDetailsPage(' . $property['id'] . ')"'; ?>>
-                                <span style="<?php echo $buttonTextStyle; ?>">
+                            <button class="<?php echo $buttonClass; ?>" <?php echo ($status == 'Occupied') ? 'disabled' : 'onclick="openTenantRegistrationModal(' . $property['id'] . ')"'; ?>
+                                data-property-id="<?php echo $property['id']; ?>">
+                                <span style=" <?php echo $buttonTextStyle; ?>">
                                     <?php echo $buttonName; ?>
                                 </span>
                             </button>
@@ -269,6 +270,50 @@ try {
             </div>
         </div>
     </div>
+    <!-- Add this modal at the end of your HTML body -->
+    <div class="modal" id="tenantRegistrationModal" tabindex="-1" role="dialog"
+        aria-labelledby="tenantRegistrationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tenantRegistrationModalLabel">Register Tenant</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Add this form within the modal body -->
+                    <form id="tenantRegistrationForm">
+                        <div><input type="hidden" id="propertyIdInput" name="propertyId">
+                        </div>
+                        <div class="form-group">
+                            <label for="idNumber">ID Number:</label>
+                            <input type="text" class="form-control rounded" id="idNumber" name="idNumber"
+                                placeholder="Enter ID Number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="firstName">First Name:</label>
+                            <input type="text" class="form-control rounded" id="firstName" name="firstName"
+                                placeholder="Enter First Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="surname">Surname:</label>
+                            <input type="text" class="form-control rounded" id="surname" name="surname"
+                                placeholder="Enter Surname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneNumber">Phone Number:</label>
+                            <input type="tel" class="form-control rounded" id="phoneNumber" name="phoneNumber"
+                                placeholder="Enter Phone Number" required>
+                        </div>
+                        <button type="submit" class="btn btn-success rounded-pill" id="rentButton">Rent</button>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <script src="https://code.jquery.com/jquery-1.11.0.min.js"
@@ -323,7 +368,84 @@ try {
         });
     </script>
 
+    <script>
+        function openTenantRegistrationModal(propertyId) {
+            // Set the property ID in the modal or perform any other necessary actions
+            // For simplicity, let's assume you want to display the property ID in an input field
+            $('#tenantRegistrationModal').find('#propertyIdInput').val(propertyId);
 
+            // Open the modal
+            $('#tenantRegistrationModal').modal('show');
+        }
+
+        $(document).ready(function () {
+            // Handle form submission
+            $('#tenantRegistrationForm').submit(function (event) {
+                event.preventDefault();
+
+
+
+                // Close the modal
+                $('#tenantRegistrationModal').modal('hide');
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('#tenantRegistrationForm').submit(function (e) {
+                e.preventDefault(); // Prevent the default form submission
+
+                // Extract form data
+                var formData = {
+                    propertyId: $('#propertyIdInput').val(),
+                    idNumber: $('#idNumber').val(),
+                    firstName: $('#firstName').val(),
+                    surname: $('#surname').val(),
+                    phoneNumber: $('#phoneNumber').val(),
+                };
+
+                // Send AJAX request to PHP script
+                $.ajax({
+                    type: 'POST',
+                    url: 'process_rent.php',
+                    data: {
+                        propertyId: $('#propertyIdInput').val(),
+                        idNumber: $('#idNumber').val(),
+                        firstName: $('#firstName').val(),
+                        surname: $('#surname').val(),
+                        phoneNumber: $('#phoneNumber').val(),
+                    },
+                    success: function (response) {
+                        // Handle the response
+                        console.log(response);
+
+                        // Check if the response contains the success message
+                        if (response.toLowerCase().includes('success')) {
+                            // Close the modal
+                            $('#tenantRegistrationModal').modal('hide');
+
+                            // Reload the page
+                            location.reload();
+                        } else {
+                            // Handle other cases or show an error message
+                            // ...
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        jQuery(document).on('click', '.occupied-btn', function () {
+            var propertyId = $(this).data('property-id');
+            $('#propertyIdInput').val(propertyId);
+            $('#rentModal').modal('show');
+        });
+    </script>
 
 
     <footer class="footer mt-auto py-3 text-center fixed-bottom">
