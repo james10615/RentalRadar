@@ -223,9 +223,9 @@ try {
     </div>
     <div class="modal" id="addPropertyModal" tabindex="-1" role="dialog" aria-labelledby="addPropertyModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content zoom-out">
-                <div class="modal-header">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content rounded">
+                <div class="modal-header bg-dark text-white">
                     <h5 class="modal-title" id="addPropertyModalLabel">Add New Property</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -236,25 +236,30 @@ try {
                         <div class="form-group">
                             <label for="propertyName">Property Name</label>
                             <input type="text" class="form-control" id="propertyName" name="propertyName"
-                                placeholder="Enter property name">
+                                placeholder="Enter property name" required>
                         </div>
                         <div class="form-group">
                             <label for="location">Unit</label>
                             <input type="text" class="form-control" id="unit" name="unit"
-                                placeholder="Enter Unit name/number">
+                                placeholder="Enter Unit name/number" required>
                         </div>
                         <div class="form-group">
                             <label for="rent">Rent</label>
-                            <input type="number" class="form-control" id="rent" name="rent"
-                                placeholder="Enter rent in Ksh">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Ksh</span>
+                                </div>
+                                <input type="number" class="form-control" id="rent" name="rent" placeholder="Enter rent"
+                                    required>
+                            </div>
                         </div>
-
                         <button type="submit" class="btn btn-dark">Submit</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
 
     <script src="https://code.jquery.com/jquery-1.11.0.min.js"
         integrity="sha384-/Gm+ur33q/W+9ANGYwB2Q4V0ZWApToOzRuA8md/1p9xMMxpqnlguMvk8QuEFWA1B"
