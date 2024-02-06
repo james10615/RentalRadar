@@ -181,9 +181,19 @@ try {
                             <p>Rent: Ksh
                                 <?php echo $property['rent']; ?>/month
                             </p>
-
+                            <?php
+                            $status = $property['status'];
+                            $buttonClass = ($status == 'Occupied') ? 'btn btn-sm btn-dark disabled' : 'btn btn-sm btn-success';
+                            $buttonName = ($status == 'Occupied') ? 'Occupied' : 'Rent';
+                            $buttonTextStyle = ($status == 'Occupied') ? 'text-decoration: line-through;' : '';
+                            ?>
+                            <button class="<?php echo $buttonClass; ?>" <?php echo ($status == 'Occupied') ? 'disabled' : 'onclick="redirectToDetailsPage(' . $property['id'] . ')"'; ?>>
+                                <span style="<?php echo $buttonTextStyle; ?>">
+                                    <?php echo $buttonName; ?>
+                                </span>
+                            </button>
                             <button class="btn btn-sm btn-dark">Details</button>
-                            <button class="btn btn-sm btn-dark">occupied</button>
+
                             <hr>
                             <form action="" method="post" class="remove-property-form">
                                 <input type="hidden" name="property_id" value="<?php echo $property['id']; ?>">
