@@ -270,7 +270,6 @@ try {
             </div>
         </div>
     </div>
-    <!-- Add this modal at the end of your HTML body -->
     <div class="modal" id="tenantRegistrationModal" tabindex="-1" role="dialog"
         aria-labelledby="tenantRegistrationModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -282,7 +281,6 @@ try {
                     </button>
                 </div>
                 <div class="modal-body">
-                    <!-- Add this form within the modal body -->
                     <form id="tenantRegistrationForm">
                         <div><input type="hidden" id="propertyIdInput" name="propertyId">
                         </div>
@@ -370,22 +368,17 @@ try {
 
     <script>
         function openTenantRegistrationModal(propertyId) {
-            // Set the property ID in the modal or perform any other necessary actions
-            // For simplicity, let's assume you want to display the property ID in an input field
             $('#tenantRegistrationModal').find('#propertyIdInput').val(propertyId);
 
-            // Open the modal
             $('#tenantRegistrationModal').modal('show');
         }
 
         $(document).ready(function () {
-            // Handle form submission
             $('#tenantRegistrationForm').submit(function (event) {
                 event.preventDefault();
 
 
 
-                // Close the modal
                 $('#tenantRegistrationModal').modal('hide');
             });
         });
@@ -394,9 +387,7 @@ try {
     <script>
         $(document).ready(function () {
             $('#tenantRegistrationForm').submit(function (e) {
-                e.preventDefault(); // Prevent the default form submission
-
-                // Extract form data
+                e.preventDefault();
                 var formData = {
                     propertyId: $('#propertyIdInput').val(),
                     idNumber: $('#idNumber').val(),
@@ -405,7 +396,6 @@ try {
                     phoneNumber: $('#phoneNumber').val(),
                 };
 
-                // Send AJAX request to PHP script
                 $.ajax({
                     type: 'POST',
                     url: 'process_rent.php',
@@ -417,19 +407,13 @@ try {
                         phoneNumber: $('#phoneNumber').val(),
                     },
                     success: function (response) {
-                        // Handle the response
                         console.log(response);
 
-                        // Check if the response contains the success message
                         if (response.toLowerCase().includes('success')) {
-                            // Close the modal
                             $('#tenantRegistrationModal').modal('hide');
 
-                            // Reload the page
                             location.reload();
                         } else {
-                            // Handle other cases or show an error message
-                            // ...
                         }
                     },
                     error: function (xhr, status, error) {
