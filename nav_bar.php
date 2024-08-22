@@ -56,10 +56,10 @@
                 <a class="nav-link active" href="#">Dashboard</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="properties.php">Properties</a>
+                <a class="nav-link" href="tenant_registration.php">Tenant Registration</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="tenant_registration.php">Tenant Registration</a>
+                <a class="nav-link" href="properties.php">Properties</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="payments.php">Payments</a>
