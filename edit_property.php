@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_property'])) {
     // Prepare and execute the update query
     $sql = "UPDATE properties SET property_name = ?, unit_name = ?, property_type = ?, address = ?, size = ?, rent = ?, deposit = ?, tenant_id = ?, move_in_date = ?, is_occupied = ? WHERE id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssssissii", $property_name, $unit_name, $property_type, $address, $size, $rent, $deposit, $tenant_id, $move_in_date, $is_occupied, $property_id);
+    $stmt->bind_param("ssssssisssi", $property_name, $unit_name, $property_type, $address, $size, $rent, $deposit, $tenant_id, $move_in_date, $is_occupied, $property_id);
 
     if ($stmt->execute()) {
         $success = true; // Update successful
@@ -167,7 +167,7 @@ $conn->close();
                     value="<?php echo htmlspecialchars($property['move_in_date']); ?>">
             </div>
             <div class="mb-3">
-                <label for="is_occupied" class="form-label">Occupied</label>
+                <label for="is_occupied" class="form-label">Is Occupied</label>
                 <select id="is_occupied" name="is_occupied" class="form-select">
                     <option value="occupied" <?php echo $property['is_occupied'] == 'occupied' ? 'selected' : ''; ?>>
                         Occupied</option>
