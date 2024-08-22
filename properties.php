@@ -26,12 +26,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_property'])) {
     $move_in_date = $_POST['move_in_date'];
     $is_occupied = $_POST['is_occupied'];
 
+    // Debugging: Check if the is_occupied value is being set
+    var_dump($is_occupied); // Outputs the value of is_occupied
+
     // Insert property into the database
     $sql = "INSERT INTO properties (property_name, unit_name, property_type, address, size, rent, deposit, tenant_id, move_in_date, is_occupied) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssssissi", $property_name, $unit_name, $property_type, $address, $size, $rent, $deposit, $tenant_id, $move_in_date, $is_occupied);
+    $stmt->bind_param("ssssssisss", $property_name, $unit_name, $property_type, $address, $size, $rent, $deposit, $tenant_id, $move_in_date, $is_occupied);
 
     if ($stmt->execute()) {
         $message = "Property added successfully!";
@@ -42,6 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_property'])) {
 
     $stmt->close();
 }
+
 
 // Handle property deletion
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_property_id'])) {
@@ -283,7 +287,7 @@ $conn->close();
                             <input type="date" class="form-control" id="move_in_date" name="move_in_date">
                         </div>
                         <div class="mb-3">
-                            <label for="is_occupied" class="form-label">Occupied</label>
+                            <label for="is_occupied" class="form-label">Is Occupied</label>
                             <select id="is_occupied" name="is_occupied" class="form-select">
                                 <option value="occupied">Occupied</option>
                                 <option value="un-occupied">Un-Occupied</option>
