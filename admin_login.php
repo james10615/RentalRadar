@@ -20,21 +20,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = trim($_POST['password']);
 
     // Prepare and execute query to find admin with the provided id_number
-    $sql = "SELECT id_number, password FROM users WHERE id_number = ? AND role = 'admin'";
+    $sql = "SELECT id_number, password, role FROM users WHERE id_number = ? AND role = 'admin'";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $id_number);
     $stmt->execute();
     $stmt->store_result();
 
     if ($stmt->num_rows === 1) {
-        $stmt->bind_result($id_number, $hashed_password);
+        $stmt->bind_result($id_number, $hashed_password, $role);
         $stmt->fetch();
 
         // Verify the password
         if (password_verify($password, $hashed_password)) {
             // Set session variables and redirect to dashboard
-            $_SESSION['admin_logged_in'] = true;
-            $_SESSION['admin_id'] = $id_number;
+            $_SESSION['role'] = $role;
+            $_SESSION['id_number'] = $id_number;
             header("Location: admin_dashboard.php");
             exit();
         } else {
@@ -58,7 +58,6 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RentalRadar - Admin Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #f8f9fa;
@@ -110,7 +109,6 @@ $conn->close();
             <button type="submit" class="btn btn-primary w-100">Login</button>
         </form>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
