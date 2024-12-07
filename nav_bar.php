@@ -53,7 +53,7 @@
         <h4 class="text-center mb-4">RentalRadar</h4>
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link active" href="#">Dashboard</a>
+                <a class="nav-link active" href="admin_dashboard.php">Dashboard</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="tenant_registration.php">Tenant Registration</a>
@@ -68,10 +68,10 @@
                 <a class="nav-link" href="taxes.php">Taxes</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="admin_profile.php">Profile</a>
+                <a class="nav-link" href="profile.php">Profile</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="admin_logout.php">Logout</a>
+                <a class="nav-link" href="logout.php">Logout</a>
             </li>
         </ul>
     </div>
