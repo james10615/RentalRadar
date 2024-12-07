@@ -112,29 +112,7 @@ $conn->close();
 </head>
 
 <body>
-    <div class="sidebar">
-        <h4 class="text-center mb-4">RentalRadar</h4>
-        <ul class="nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link active" href="#">Dashboard</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="properties.php">Properties</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="payments.php">Payments</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="taxes.php">Taxes</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="admin_profile.php">Profile</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="admin_logout.php">Logout</a>
-            </li>
-        </ul>
-    </div>
+    <?php include 'nav_bar.php'; ?>
     <div class="content">
         <div class="container-fluid">
             <h2 class="mb-4">Admin Dashboard</h2>
@@ -193,10 +171,10 @@ $conn->close();
                                                     <?php echo htmlspecialchars($property['id']); ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo htmlspecialchars($property['name']); ?>
+                                                    <?php echo htmlspecialchars($property['unit_name']); ?>
                                                 </td>
                                                 <td>
-                                                    <?php echo htmlspecialchars($property['status']); ?>
+                                                    <?php echo htmlspecialchars($property['is_occupied']); ?>
                                                 </td>
                                             </tr>
                                         <?php endwhile; ?>
